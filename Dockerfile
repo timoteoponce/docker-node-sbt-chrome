@@ -16,13 +16,13 @@ ENV NODE_VERSION 7.2.0
 USER root
 
 RUN apt-get update && \
-  apt-get install -y git curl xz-utils \
+  apt-get install -y git curl xz-utils xvfb \
   && groupadd --gid 1100 node \
   && useradd --uid 1100 --gid node --shell /bin/bash --create-home node \
   && curl -kSLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  && npm install -g bower gulp && npm cache clean \
+  && npm install -g bower gulp polymer-cli && npm cache clean \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
@@ -37,5 +37,4 @@ RUN  curl \
     | tar x -C /usr/ \
     && ln -s $JAVA_HOME /usr/java \
     && rm -rf $JAVA_HOME/src.zip $JAVA_HOME/javafx-src.zip $JAVA_HOME/man
-
 
