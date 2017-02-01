@@ -40,6 +40,4 @@ RUN curl -kSLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  && npm install -g bower gulp web-component-tester polymer-cli wct-xunit-reporter && npm cache clean
-
-
+  && npm install -g bower gulp web-component-tester && npm cache clean
