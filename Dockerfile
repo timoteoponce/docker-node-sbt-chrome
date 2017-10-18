@@ -17,14 +17,9 @@ RUN apt-get update && apt-get install -y curl git xvfb firefox apt-transport-htt
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local
-RUN  curl \
-  --silent \
-  --location \
-  --retry 3 \
-  --header "Cookie: oraclelicense=accept-securebackup-cookie;" \
-  "http://download.oracle.com/otn-pub/java/jdk/8u66-b17/jdk-8u66-linux-x64.tar.gz" \
-    | gunzip \
-    | tar x -C /usr/ \
+RUN curl -LOH 'Cookie: oraclelicense=accept-securebackup-cookie' $(curl -s https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.tgz) \
+    && mkdir -p /usr/java \
+    && tar xvf jdk-*.tar.gz -C /usr/java --strip-components=1 \
     && ln -s $JAVA_HOME /usr/java \
     && rm -rf $JAVA_HOME/src.zip $JAVA_HOME/javafx-src.zip $JAVA_HOME/man
 
@@ -36,7 +31,12 @@ RUN groupadd --gid 1000 node \
   && useradd --uid 1000 --gid node --shell /bin/bash --create-home node
 
 RUN curl -kSLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
+  && chmod -R a+rwx /usr/local/lib/ \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" \
-  && ln -s /usr/local/bin/node /usr/local/bin/nodejs \
-  && npm install -g bower gulp web-component-tester && npm cache clean
+  && ln -s /usr/local/bin/node /usr/local/bin/nodejs && mkdir -p /usr/local/lib && mkdir -p /usr/local/node_modules \
+  && chown -R node /usr/local/ 
+
+USER node
+
+RUN npm install -g bower gulp polymer-cli
