@@ -1,6 +1,5 @@
 FROM ubuntu:zesty
 MAINTAINER Timoteo Ponce <timo.slack@gmail.com>
-
 ##########################
 # INSTALL JAVA, SBT and other deps
 ENV SBT_VERSION 0.13.11
@@ -9,7 +8,7 @@ ENV JAVA_HOME /usr/jdk1.8.0_66
 ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV PATH ${PATH}:${SBT_HOME}/bin
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 7.2.0
+ENV NODE_VERSION 8.2.1
 
 USER root
 
