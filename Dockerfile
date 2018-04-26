@@ -45,3 +45,5 @@ RUN curl -kSLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux
 USER node
 
 RUN npm install -g bower gulp polymer-cli
+
+USER root
