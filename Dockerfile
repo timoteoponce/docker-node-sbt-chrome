@@ -9,6 +9,7 @@ ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV PATH ${PATH}:${SBT_HOME}/bin
 ENV NPM_CONFIG_LOGLEVEL info
 ENV NODE_VERSION 8.11.1
+###########################
 
 USER root
 
