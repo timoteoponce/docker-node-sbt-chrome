@@ -1,10 +1,10 @@
-FROM ubuntu:zesty
+FROM openjdk:8-jdk
 MAINTAINER Timoteo Ponce <timo.slack@gmail.com>
 ##########################
 # INSTALL JAVA, SBT and other deps
 ENV SBT_VERSION 0.13.11
 ENV SBT_HOME /usr/local/sbt
-ENV JAVA_HOME /usr/jdk1.8.0_66
+#ENV JAVA_HOME /usr/jdk1.8.0_66
 ENV PATH ${PATH}:${JAVA_HOME}/bin
 ENV PATH ${PATH}:${SBT_HOME}/bin
 ENV NPM_CONFIG_LOGLEVEL info
@@ -14,18 +14,19 @@ ENV NODE_VERSION 8.11.1
 USER root
 
 # Fix for non supported packages
-RUN sed -i.bak -r 's/(archive|security).ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+# RUN sed -i.bak -r 's/(archive|security).ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 
-RUN apt-get update && apt-get install -y curl git xvfb firefox apt-transport-https \
+RUN apt-get update && apt-get install -y curl git xvfb apt-transport-https \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN curl -sL "http://dl.bintray.com/sbt/native-packages/sbt/$SBT_VERSION/sbt-$SBT_VERSION.tgz" | gunzip | tar -x -C /usr/local
-RUN curl -LOH 'Cookie: oraclelicense=accept-securebackup-cookie' $(curl -s https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.tgz) \
-    && mkdir -p /usr/java \
-    && tar xvf jdk-*.tar.gz -C /usr/java --strip-components=1 \
-    && ln -s $JAVA_HOME /usr/java \
-    && rm -rf $JAVA_HOME/src.zip $JAVA_HOME/javafx-src.zip $JAVA_HOME/man
+#RUN curl -LOH 'Cookie: oraclelicense=accept-securebackup-cookie' $(curl -s https://lv.binarybabel.org/catalog-api/java/jdk8.txt?p=downloads.tgz) \
+#    && mkdir -p /usr/java \
+#    && tar xvf jdk-*.tar.gz -C /usr/java --strip-components=1 \
+#    && ln -s $JAVA_HOME /usr/java \
+#    && rm -rf $JAVA_HOME/src.zip $JAVA_HOME/javafx-src.zip $JAVA_HOME/man
+
 
 RUN curl -sL https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
 RUN sh -c 'echo "deb [arch=amd64] https://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
