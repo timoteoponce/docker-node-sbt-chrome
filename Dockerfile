@@ -13,6 +13,9 @@ ENV NODE_VERSION 8.11.1
 
 USER root
 
+# Fix for non supported packages
+RUN sed -i.bak -r 's/(archive|security).ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y curl git xvfb firefox apt-transport-https \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
