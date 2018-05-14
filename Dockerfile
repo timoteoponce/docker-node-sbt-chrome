@@ -47,3 +47,14 @@ USER node
 RUN npm install -g bower gulp polymer-cli
 
 USER root
+# Add certificates
+RUN mkdir -p /usr/local/share/ca-certificates/
+
+COPY trust-certs/ /usr/local/share/ca-certificates/
+
+RUN ls -1 /usr/local/share/ca-certificates | while read cert; do \
+  openssl x509 -outform der -in /usr/local/share/ca-certificates/$cert -out $cert.der; \
+  $JAVA_HOME/bin/keytool -import -alias $cert -keystore $JAVA_HOME/jre/lib/security/cacerts -trustcacerts -file $cert.der -storepass changeit -noprompt; \
+  rm $cert.der; \
+  done
+
